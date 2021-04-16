@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="shapes.css">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Picking Shape properties :-->
+    <!-- Fill color -->
+    <label for="fill-color">Pick Fill Color</label>
+    <input type="color" id="fill-color" name="fill-color" value="#000000">
+    <!-- Stroke Color -->
+    <label for="stroke-color">Pick Stroke Color</label>
+    <input type="color" id="stroke-color" name="stroke-color" value="#000000">
+    <!-- Line Width -->
+    <label for="line-width">Line Width</label>
+    <input type="text" name="line-width" id="line-width">
+    <br>
+
+    <!-- Square properties -->
+    <label for="square-x">X coordinate for Square</label>
+    <input type="text" id="square-x" name="square-x">
+    <label for="square-y">Y coordinate for Square</label>
+    <input type="text" id="square-y" name="square-y">
+    <label for="square-lenght">Square Lenght</label>
+    <input type="text" id="square-lenght" name="square-lenght">
+    <button id="create-square">Generate Square</button>
+    <br>
+
+    <!-- Rectangle properties -->
+    <label for="rect-x">X coordinate for Rectangle</label>
+    <input type="text" id="rect-x" name="rect-x">
+    <label for="rect-y">Y coordinate for Rectangle</label>
+    <input type="text" id="rect-y" name="rect-y">
+    <label for="rect-width">Rectangle Width</label>
+    <input type="text" id="rect-width" name="rect-width">
+    <label for="rect-height">Rectangle Height</label>
+    <input type="text" id="rect-height" name="rect-height">
+    <button id="create-rectangle">Generate Rectangle</button>
+    <br>
+
+    <!-- Circle properties -->
+    <label for="circle-x">X coordinate for Circle</label>
+    <input type="text" id="circle-x" name="circle-x">
+    <label for="circle-y">Y coordinate for Circle</label>
+    <input type="text" id="circle-y" name="circle-y">
+    <label for="circle-radius">Circle Radius</label>
+    <input type="text" id="circle-radius" name="circle-radius">
+    <button id="create-circle">Generate Circle</button>
+    <br>
+
+    <!-- Regular Polygon properties -->
+    <!-- <label for="polygon-x">X coordinate for Regular Polygon</label>
+    <input type="number" id="polygon-x" name="polygon-x">
+    <label for="polygon-y">Y coordinate for Regular Polygon</label>
+    <input type="number" id="polygon-y" name="polygon-y">
+    <label for="polygon-sides">Specify Number of Regular Polygon Sides</label>
+    <input type="number" id="polygon-sides" name="polygon-sides">
+    <label for="polygon-radius">Specify Regular Polygon Radius</label>
+    <input type="number" id="polygon-radius" name="polygon-radius">
+    <button id="create-polygon">Generate Polygon</button>
+    <br> -->
+
+    <!-- Irregular Polygon properties -->
+    <span>*To draw an Irregular Polygon, either with mouse click or enter each point's x and y coordinates manually</span>
+    <br>
+    <label for="poly-point-x">X coordinate for point of Irregular Polygon</label>
+    <input type="number" id="poly-point-x" name="poly-point-x">
+    <label for="poly-point-y">Y coordinate for point of Irregular Polygon</label>
+    <input type="number" id="poly-point-y" name="poly-point-y">
+    <button id="create-point">Create Point</button>
+    <button id="delete-point">Delete Point</button>
+    <br>
+
+    <!-- Canvas where to draw Shapes -->
+    <canvas id="canvas"></canvas>
+    <br>
+
+    <!-- Mouse Position / Coordinates in the Canvas -->
+    <div class="mouse-container">
+        <p id="mouse-pos"></p>
+    </div>
+
+    <!-- Manual Clear of the Canvas -->
+    <button id="clear-canvas">Clear Canvas</button>
+
+    <script src="shapes.js"></script>
+</body>
+</html>

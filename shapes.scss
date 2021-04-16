@@ -1,0 +1,21 @@
+body {
+  width:  100%;
+  height: 100%;
+  margin: 0;
+  //overflow: hidden;
+}
+
+canvas {
+    //display: block;
+    //position: relative;
+    border: 1px solid #000000;
+    margin-left: 10px;
+}
+
+input, label, button, p, span {
+    margin: 10px;
+}
+
+.mouse-container {
+    display: inline-block;
+}
