@@ -3,7 +3,7 @@ var context = canvas.getContext('2d');
 
 // Canvas size
 canvas.height = window.innerHeight * 0.70;
-canvas.width = window.innerWidth * 0.989;
+canvas.width = window.innerWidth * 0.98;
 
 // Shape class which holds properties : fill color, stroke color, line width
 class Shape {
@@ -32,6 +32,7 @@ class Square extends Shape {
     }
     // draw Method
     draw() {
+        context.save();
         context.beginPath();
         // Draws Square in x and y coordinates with specified lenght (Rectangle with width = height)
         context.rect(this.x, this.y, this.lenght, this.lenght);
@@ -58,6 +59,7 @@ class Rectangle extends Shape {
     }
     // draw Method
     draw() {
+        context.save();
         context.beginPath();
         // Draws rectangle in x and y coordinates with specified width and height
         context.rect(this.x, this.y, this.width, this.height);
@@ -83,6 +85,7 @@ class Circle extends Shape {
     }
     // draw Method
     draw() {
+        context.save();
         context.beginPath();
         // Draws Circle in x and y coordinates with specified radius clockwise from 0 as starting angle to Math.PI*2 as ending angle to draw full circle
         // arc(x,y,r,startangle,endangle)
@@ -97,6 +100,40 @@ class Circle extends Shape {
     };
 }
 
+// Regular Polygon class inherits properties (fill color, stroke color, line width) from Shape
+class regularPolygon extends Shape {
+    constructor(fill, stroke, line, x, y, sides, radius) {
+        // Getting access to the parent methods and properties
+        super(fill, stroke, line);
+        // Regular Polygon properties
+        this.x = x;
+        this.y = y;
+        this.sides = sides;
+        this.radius = radius;
+    }
+    // draw Method
+    draw() {
+        var i;
+        context.save();
+        context.beginPath();
+        var rot = Math.PI * 1.5;
+        var angle = (Math.PI * 2) / this.sides;
+        context.translate(this.x, this.y);
+        context.rotate(rot);
+        context.moveTo(this.radius, 0);
+        for (i = 1; i < this.sides; i++) {
+            context.lineTo(this.radius * Math.cos(angle * i), this.radius * Math.sin(angle * i));
+        }
+        // Style method from Shape class
+        this.style();
+        // Fill shape with color
+        context.fill();
+        context.closePath();
+        // Draw stroke after closing the path
+        context.stroke();
+    }
+}
+
 // Irregular Polygon class inherits properties (fill color, stroke color, line width) from Shape
 class irregularPolygon extends Shape {
     constructor(fill, stroke, line, poly_points) {
@@ -108,6 +145,7 @@ class irregularPolygon extends Shape {
     // draw Method
     draw() {
         var i;
+        context.save();
         context.beginPath();
         // Starting x and y coordinates position 0 and 1 in the array
 		context.moveTo(poly_points[0], poly_points[1]);
@@ -127,6 +165,7 @@ class irregularPolygon extends Shape {
 
 // Clear pixels in canvas within a rectangle (x, y, width, height)
 function clearCanvas() {
+    context.restore();
     context.clearRect(0, 0, canvas.width, canvas.height);
     //context.clearRect(0,0, context.canvas.width, context.canvas.height)
 }
@@ -173,6 +212,7 @@ var square_lenght = document.getElementById('square-lenght');
 document.getElementById('create-square').addEventListener("click", function () {
     // Clear canvas in case a shape is already drawn
     clearCanvas();
+    clearPolygon();
     // Get Shape properties values
     let fill_color = fill_color_picker.value;
     let stroke_color = stroke_color_picker.value;
@@ -197,6 +237,7 @@ var rect_height = document.getElementById('rect-height');
 document.getElementById('create-rectangle').addEventListener("click", function () {
     // Clear canvas in case a shape is already drawn
     clearCanvas();
+    clearPolygon();
     // Get Shape properties values
     let fill_color = fill_color_picker.value;
     let stroke_color = stroke_color_picker.value;
@@ -221,6 +262,7 @@ var circle_radius = document.getElementById('circle-radius');
 document.getElementById('create-circle').addEventListener("click", function () {
     // Clear canvas in case a shape is already drawn
     clearCanvas();
+    clearPolygon();
     // Get Shape properties values
     let fill_color = fill_color_picker.value;
     let stroke_color = stroke_color_picker.value;
@@ -232,6 +274,39 @@ document.getElementById('create-circle').addEventListener("click", function () {
     // Generate new Circle object
     let circle = new Circle (fill_color, stroke_color, lw, cx, cy, cr);
     circle.draw();
+});
+
+/* Create Regular Polygon */
+
+// Get Regular Polygon properties inputs
+var polygon_x = document.getElementById('polygon-x');
+var polygon_y = document.getElementById('polygon-y');
+var polygon_sides = document.getElementById('polygon-sides');
+var polygon_radius = document.getElementById('polygon-radius');
+
+document.getElementById('create-polygon').addEventListener("click", function () {
+    // Clear canvas in case a shape is already drawn
+    clearCanvas();
+    clearPolygon();
+    // Get Shape properties values
+    let fill_color = fill_color_picker.value;
+    let stroke_color = stroke_color_picker.value;
+    let lw = line_width.value;
+    // Get Regular Polygon properties values
+    let px = polygon_x.value;
+    let py = polygon_y.value;
+    let ps = polygon_sides.value;
+    let pr = parseInt(polygon_radius.value);
+    // Generate new Regular Polygon Object
+    /* let reg_poly = new regularPolygon (fill_color, stroke_color, lw, px, py, ps, pr);
+    reg_poly.draw(); */
+
+    /* if(isNaN(pr)){alert('Radius must be a number');return;}
+    if(radius<1){alert('Radius must be 1+');return;} */
+    if (pr !== '' || pr > 1 || ps > 2) {
+        let reg_poly = new regularPolygon(fill_color, stroke_color, lw, px, py, ps, pr);
+        reg_poly.draw();
+    }
 });
 
 /* Create Irregular Polygon */
@@ -253,6 +328,8 @@ document.getElementById('create-point').addEventListener("click", function () {
     let fill_color = fill_color_picker.value;
     let stroke_color = stroke_color_picker.value;
     let lw = line_width.value;
+    // Clear canvas to redraw the Irregular Polygon
+    clearCanvas();
     // Generate new Irregular Polygon Object
     let irreg_poly = new irregularPolygon (fill_color, stroke_color, lw, poly_points);
     irreg_poly.draw();
@@ -263,12 +340,12 @@ document.getElementById('delete-point').addEventListener("click", function () {
     poly_points.pop();
     poly_points.pop();
     console.log(poly_points);
-    // Clear canvas to redraw the Irregular Polygon
-    clearCanvas();
     // Get Shape properties values
     let fill_color = fill_color_picker.value;
     let stroke_color = stroke_color_picker.value;
     let lw = line_width.value;
+    // Clear canvas to redraw the Irregular Polygon
+    clearCanvas();
     // Generate new Irregular Polygon Object
     let irreg_poly = new irregularPolygon (fill_color, stroke_color, lw, poly_points);
     irreg_poly.draw();
@@ -284,6 +361,8 @@ canvas.addEventListener('click', function(event) {
     poly_points.push(mousePos.x);
     poly_points.push(mousePos.y);
     console.log(poly_points);
+    // Clear canvas to redraw the Irregular Polygon
+    clearCanvas();
     // Generate new Irregular Polygon Object
     let irreg_poly = new irregularPolygon (fill_color, stroke_color, lw, poly_points);
     irreg_poly.draw();
